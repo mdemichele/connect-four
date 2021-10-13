@@ -5,38 +5,55 @@
  * board fills (tie)
  */
 
-var WIDTH = 7;
-var HEIGHT = 6;
+const WIDTH = 7;
+const HEIGHT = 6;
 
-var currPlayer = 1; // active player: 1 or 2
-var board = []; // array of rows, each row is array of cells  (board[y][x])
+let currPlayer = 1; // active player: 1 or 2
+let board = []; // array of rows, each row is array of cells  (board[y][x])
 
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
 
 function makeBoard() {
-  // TODO: set "board" to empty HEIGHT x WIDTH matrix array
+  // set "board" to empty HEIGHT x WIDTH matrix array
+  let row = 0;
+  while (row < HEIGHT) {
+    board.push([]);
+    let column = 0;
+    while (column < WIDTH) {
+      board[row].push(null);
+      column++;
+    }
+    row++;
+  }
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
 
 function makeHtmlBoard() {
-  // TODO: get "htmlBoard" variable from the item in HTML w/ID of "board"
-
-  // TODO: add comment for this code
+  // get "htmlBoard" variable from the item in HTML w/ID of "board"
+  let htmlBoard = document.getElementById("board");
+  
+  // Create top row: This is where players may drop a piece from 
   var top = document.createElement("tr");
   top.setAttribute("id", "column-top");
   top.addEventListener("click", handleClick);
 
+  // Create the individual cells in top row and append
   for (var x = 0; x < WIDTH; x++) {
     var headCell = document.createElement("td");
     headCell.setAttribute("id", x);
     top.append(headCell);
   }
+  
+  // Append top row to HTML Board 
   htmlBoard.append(top);
 
-  // TODO: add comment for this code
+  // Create the game board 
+  // For each row, create the correct number of cells 
+  // Each cell will have a unique id that matches its row#-column#
+  // Append the newly created rows to the html page
   for (var y = 0; y < HEIGHT; y++) {
     const row = document.createElement("tr");
     for (var x = 0; x < WIDTH; x++) {
@@ -52,19 +69,44 @@ function makeHtmlBoard() {
 
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
-  return 0;
+  let currY = board.length - 1;
+  
+  // Find the first spot in the specified column that is open 
+  while (currY >= 0) {
+    if (board[currY][x] == null) {
+      return currY;
+    }
+    currY--;
+  }
+  
+  return null;
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
 
 function placeInTable(y, x) {
-  // TODO: make a div and insert into correct table cell
+  // Create New div element to insert into DOM
+  let newPiece = document.createElement("div");
+  newPiece.classList.add("piece");
+  
+  // Give new div element the correct class 
+  if (currPlayer == 1) {
+    newPiece.classList.add("player1");
+  } else {
+    newPiece.classList.add("player2");
+  }
+  
+  // Insert the div into the correct spot in DOM 
+  let correctSlot = document.getElementById(`${y}-${x}`);
+  correctSlot.appendChild(newPiece);
+  
 }
 
 /** endGame: announce game end */
 
 function endGame(msg) {
-  // TODO: pop up alert message
+  alert(msg);
+  return;
 }
 
 /** handleClick: handle click of column top to play piece */
@@ -82,6 +124,9 @@ function handleClick(evt) {
   // place piece in board and add to HTML table
   // TODO: add line to update in-memory board
   placeInTable(y, x);
+  
+  // update in-memory board 
+  board[y][x] = currPlayer;
 
   // check for win
   if (checkForWin()) {
@@ -90,9 +135,22 @@ function handleClick(evt) {
 
   // check for tie
   // TODO: check if all cells in board are filled; if so call, call endGame
-
-  // switch players
-  // TODO: switch currPlayer 1 <-> 2
+  let gameOver = 0;
+  for (let row of board) {
+    if (row.some(value => value == null)) {
+      gameOver = 0;
+      break;
+    } else {
+      gameOver = 1;
+    }
+  }
+  
+  if (gameOver == 1) {
+    return endGame("Board filled. Game is a tie.");
+  };
+  
+  // switch currPlayer 1 <-> 2
+  currPlayer = (currPlayer === 1) ? 2 : 1;
 }
 
 /** checkForWin: check board cell-by-cell for "does a win start here?" */
@@ -128,6 +186,7 @@ function checkForWin() {
     }
   }
 }
+
 
 makeBoard();
 makeHtmlBoard();
