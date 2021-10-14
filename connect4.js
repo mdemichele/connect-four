@@ -4,7 +4,6 @@
  * column until a player gets four-in-a-row (horiz, vert, or diag) or until
  * board fills (tie)
  */
-
 const WIDTH = 7;
 const HEIGHT = 6;
 
@@ -14,7 +13,6 @@ let board = []; // array of rows, each row is array of cells  (board[y][x])
 /** makeBoard: create in-JS board structure:
  *    board = array of rows, each row is array of cells  (board[y][x])
  */
-
 function makeBoard() {
   // set "board" to empty HEIGHT x WIDTH matrix array
   let row = 0;
@@ -30,7 +28,6 @@ function makeBoard() {
 }
 
 /** makeHtmlBoard: make HTML table and row of column tops. */
-
 function makeHtmlBoard() {
   // get "htmlBoard" variable from the item in HTML w/ID of "board"
   let htmlBoard = document.getElementById("board");
@@ -66,7 +63,6 @@ function makeHtmlBoard() {
 }
 
 /** findSpotForCol: given column x, return top empty y (null if filled) */
-
 function findSpotForCol(x) {
   // TODO: write the real version of this, rather than always returning 0
   let currY = board.length - 1;
@@ -83,7 +79,6 @@ function findSpotForCol(x) {
 }
 
 /** placeInTable: update DOM to place piece into HTML table of board */
-
 function placeInTable(y, x) {
   // Create New div element to insert into DOM
   let newPiece = document.createElement("div");
@@ -103,7 +98,6 @@ function placeInTable(y, x) {
 }
 
 /** endGame: announce game end */
-
 function endGame(msg) {
   alert(msg);
   return;
@@ -171,8 +165,14 @@ function checkForWin() {
     );
   }
 
-  // TODO: read and understand this code. Add comments to help you.
-
+  // Checks all possible winning scenarios at each position on the board 
+  // For each position, check:
+  // horiz: If four in a row match from right to left 
+  // vert: If four in a row match from bottom to top 
+  // diagDR: If four in a row match in the right diagonal 
+  // diagDL: If four in a row match in the left diagonal 
+  // If any of the four possible scenarios return a winner, return true 
+  // Else return null 
   for (var y = 0; y < HEIGHT; y++) {
     for (var x = 0; x < WIDTH; x++) {
       var horiz = [[y, x], [y, x + 1], [y, x + 2], [y, x + 3]];
@@ -187,6 +187,9 @@ function checkForWin() {
   }
 }
 
+// Set background video playback rate 
+// let backgroundVideo = document.getElementById("background-video");
+// backgroundVideo.playbackRate = 0.8;
 
 makeBoard();
 makeHtmlBoard();

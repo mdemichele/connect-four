@@ -1,18 +1,70 @@
-/* game board table */
+/* Luckiest Guy Font */
+@import url('https://fonts.googleapis.com/css2?family=Luckiest+Guy&display=swap');
 
+/* Piece animation */
+@keyframes dropPiece {
+  0% { top: -500%; } 
+  50% { top: -200%; }
+  100% { top: 10%; }
+}
+
+
+/* Page Wide Styles */
+body {
+  font-family: 'luckiest guy', serif;
+  margin: 0;
+}
+
+/* Background-video */
+#background-video {
+  position: absolute;
+  z-index: -99;
+  width: 100%;
+}
+
+/* Title Section */
+#title-container {
+  display: flex;
+  justify-content: center;
+}
+
+#title {
+  font-size: 42px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+#title-connect {
+  color: blue;
+}
+
+#title-four {
+  color: red;
+}
+/* Game Board Section */
+#game {
+  display: flex;
+  justify-content: center;
+}
+
+/* game board table */
 #board td {
   width: 50px;
   height: 50px;
   border: solid 1px #666;
+  position: relative;
 }
 
 /* pieces are div within game table cells: draw as colored circles */
-
 .piece {
+  position: absolute;
   border-radius: 50%;
-  margin: 5px;
+  top: 10%;
+  left: 10%;
   width: 80%;
   height: 80%;
+  animation-name: dropPiece;
+  animation-duration: 0.1s;
 }
 
 .player1 {
